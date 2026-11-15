@@ -54,9 +54,19 @@ $('#photos').addEventListener('change',async e=>{
     for(const file of e.target.files){
       if(!file.type.startsWith('image/')) continue;
       const url=URL.createObjectURL(file);
-      const im=new Image();im.src=url;
-      await new Promise((resolve,reject)=>{im.onload=resolve;im.onerror=()=>reject(new Error('No se pudo leer una fotografía.'));});
-      pics.push(im);
+      const im = new Image();
+
+await new Promise((resolve, reject) => {
+  im.onload = resolve;
+  im.onerror = () => reject(new Error('No se pudo cargar una fotografía'));
+  im.src = url;
+});
+
+if (!im.naturalWidth || !im.naturalHeight) {
+  throw new Error('Imagen no válida');
+}
+
+pics.push(im);
       const tile=document.createElement('div');tile.className='thumb';
       const thumb=document.createElement('img');thumb.src=url;thumb.alt='Fotografía seleccionada';tile.append(thumb);$('#thumbs').append(tile);
     }
