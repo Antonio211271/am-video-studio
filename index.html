@@ -4,201 +4,307 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#10131d">
-<title>A&M VIDEO STUDIO 0.3</title>
+<title>A&M VIDEO STUDIO 0.4</title>
 <style>
 :root{color-scheme:dark;--bg:#10131d;--panel:#1b2232;--line:#343c50;--muted:#adb7ca;--accent:#9b8cff}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#171c2b,#0d1018 65%);color:#f6f7fb;font:15px system-ui,-apple-system,Segoe UI,sans-serif}
-header{padding:20px;background:#171c2b;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}.brand{font-size:20px;font-weight:850;letter-spacing:1px}.brand b{color:#a99cff}.sub{color:var(--muted);font-size:12px;margin-top:4px}
-main{max-width:760px;margin:auto;padding:14px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:14px;box-shadow:0 8px 28px #0002}
-h2{font-size:16px;margin:0 0 10px}p,.hint{color:var(--muted);font-size:12px;line-height:1.5}label{display:block;margin:12px 0 5px;font-size:13px}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(160deg,#171c2b,#0d1018 65%);color:#f6f7fb;font:15px system-ui,sans-serif}
+header{padding:20px;background:#171c2b;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
+.brand{font-size:20px;font-weight:850;letter-spacing:1px}
+.brand b{color:#a99cff}
+.sub{color:var(--muted);font-size:12px;margin-top:4px}
+main{max-width:760px;margin:auto;padding:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:14px;box-shadow:0 8px 28px #0002}
+h2{font-size:16px;margin:0 0 10px}
+p,.hint{color:var(--muted);font-size:12px;line-height:1.5}
+label{display:block;margin:12px 0 5px;font-size:13px}
 input,select{width:100%;padding:11px;border-radius:10px;background:#101725;color:white;border:1px solid #414b64}
-button{width:100%;padding:14px;margin-top:14px;border:0;border-radius:12px;background:linear-gradient(100deg,#897aff,#579cff);color:white;font-weight:800;cursor:pointer}button:disabled{opacity:.55}
-#thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.thumb img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}#preview{display:block;width:min(100%,270px);margin:auto;background:#05070b;border-radius:8px}
-#status{font-size:13px;color:#d0c8ff;margin-top:10px;white-space:pre-wrap;line-height:1.5}#download{display:none;color:#c7bdff;margin-top:12px;font-weight:700}
+button{padding:10px;border:0;border-radius:9px;background:#414b68;color:white;font-weight:700;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+#thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.thumb{min-width:0;background:#121827;border:1px solid var(--line);border-radius:10px;padding:6px;display:flex;flex-direction:column;gap:5px}
+.thumb img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:7px}
+.thumb .name{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.thumb .actions{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.thumb .actions button{margin:0;padding:7px 2px;font-size:12px}
+.thumb .remove{background:#713b50}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#preview{display:block;width:min(100%,270px);margin:auto;background:#05070b;border-radius:8px}
+#status{font-size:13px;color:#d0c8ff;margin-top:10px;white-space:pre-wrap;line-height:1.5}
+#download{display:none;color:#c7bdff;margin-top:12px;font-weight:700}
 .tag{display:inline-block;background:#302b50;color:#d9d2ff;border-radius:99px;padding:4px 9px;font-size:11px;margin-bottom:9px}
+#make{width:100%;padding:14px;margin-top:14px;background:linear-gradient(100deg,#897aff,#579cff)}
 @media(min-width:600px){main{padding:22px}.grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
-<header><div class="brand">A&amp;M <b>VIDEO STUDIO</b> <span style="font-size:12px;color:#b9b2ff">0.3</span></div><div class="sub">Montaje automático inteligente · Prueba experimental</div></header>
+<header>
+<div class="brand">A&M <b>VIDEO STUDIO</b> <span style="font-size:12px;color:#b9b2ff">0.4 BETA</span></div>
+<div class="sub">Montaje automático inteligente · Editor experimental</div>
+</header>
+
 <main>
 <section class="panel">
-<span class="tag">MODO AUTOMÁTICO</span><h2>1. Fotografías y música</h2>
-<p>Selecciona tus fotografías. El estudio elegirá movimientos suaves y transiciones de fundido automáticamente. Puedes añadir una pista de música propia.</p>
-<label for="photos">Fotografías</label><input id="photos" type="file" accept="image/*" multiple>
+<span class="tag">MODO AUTOMÁTICO</span>
+<h2>1. Fotografías y música</h2>
+<p>Selecciona tus fotografías. Organiza el orden, elimina las que no quieras y crea tu montaje automático.</p>
+<label for="photos">Fotografías</label>
+<input id="photos" type="file" accept="image/*" multiple>
 <div id="thumbs"></div>
-<label for="music">Música (opcional)</label><input id="music" type="file" accept="audio/*">
+<p class="hint">Usa ↑ y ↓ para cambiar el orden. Pulsa × para eliminar una fotografía.</p>
+<label for="music">Música (opcional)</label>
+<input id="music" type="file" accept="audio/*">
 </section>
+
 <section class="panel">
 <h2>2. Ajustes del montaje</h2>
 <div class="grid">
-<div><label for="format">Formato</label><select id="format"><option value="v">Vertical 9:16</option><option value="s">Cuadrado 1:1</option><option value="h">Horizontal 16:9</option></select></div>
-<div><label for="duration">Duración</label><select id="duration"><option value="15">15 segundos · prueba</option><option value="30" selected>30 segundos</option><option value="60">60 segundos</option><option value="90">90 segundos</option></select></div>
-<div><label for="volume">Volumen de música</label><input id="volume" type="range" min="0" max="100" value="55"></div>
+<div><label for="format">Formato</label>
+<select id="format">
+<option value="v">Vertical 9:16</option>
+<option value="s">Cuadrado 1:1</option>
+<option value="h">Horizontal 16:9</option>
+</select></div>
+<div><label for="duration">Duración</label>
+<select id="duration">
+<option value="15">15 segundos · prueba</option>
+<option value="30" selected>30 segundos</option>
+<option value="60">60 segundos</option>
+<option value="90">90 segundos</option>
+</select></div>
+<div><label for="volume">Volumen de música</label>
+<input id="volume" type="range" min="0" max="100" value="55"></div>
 </div>
-<label for="title">Título opcional</label><input id="title" type="text" maxlength="60" placeholder="Escribe un título para tu vídeo">
+<label for="title">Título opcional</label>
+<input id="title" type="text" maxlength="60" placeholder="Escribe un título para tu vídeo">
 <button id="make" type="button">CREAR MONTAJE AUTOMÁTICO</button>
 <div id="status" role="status" aria-live="polite">Selecciona al menos dos fotografías para comenzar.</div>
-<a id="download" download="AM-VIDEO-STUDIO-03.webm">Descargar vídeo</a>
+<a id="download" download="AM-VIDEO-STUDIO-04.webm">Descargar vídeo</a>
 </section>
-<section class="panel"><h2>Vista previa</h2><canvas id="preview" width="540" height="960"></canvas>
-<p>La versión 0.3 añade disoluciones entre imágenes, movimientos automáticos variados y fundidos de música. La exportación actual es WebM; MP4 Full HD se desarrollará en otra etapa.</p></section>
-</main>
-<script>
-(() => {
-'use strict';
-const $ = s => document.querySelector(s);
-const canvas = $('#preview'), ctx = canvas.getContext('2d'), status = $('#status');
-let pics = [], urls = [];
 
-function dimensions() {
-  const f=$('#format').value;
-  canvas.width=f==='s'?800:f==='h'?960:540;
-  canvas.height=f==='s'?800:f==='h'?540:960;
+<section class="panel">
+<h2>Vista previa</h2>
+<canvas id="preview" width="540" height="960"></canvas>
+<p>Versión 0.4: galería organizable, movimientos automáticos, transiciones y música. Exportación actual WebM; MP4 Full HD se desarrollará en otra etapa.</p>
+</section>
+</main>
+
+<script>
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s);
+const canvas=$('#preview'),ctx=canvas.getContext('2d'),status=$('#status');
+let pics=[],urls=[];
+
+function dimensions(){
+ const f=$('#format').value;
+ canvas.width=f==='s'?800:f==='h'?960:540;
+ canvas.height=f==='s'?800:f==='h'?540:960;
 }
-function imageRect(im, progress, motionIndex) {
-  const w=canvas.width,h=canvas.height;
-  const scaleBase=Math.max(w/im.naturalWidth,h/im.naturalHeight);
-  const zoom=1+0.075*progress;
-  const sw=w/(scaleBase*zoom), sh=h/(scaleBase*zoom);
-  const patterns=[[.5+progress*.12,.5],[.5-progress*.12,.5],[.5,.5+progress*.12],[.5,.5-progress*.12]];
-  const p=patterns[motionIndex%patterns.length];
-  const sx=Math.max(0,Math.min(im.naturalWidth-sw,(im.naturalWidth-sw)*p[0]));
-  const sy=Math.max(0,Math.min(im.naturalHeight-sh,(im.naturalHeight-sh)*p[1]));
-  ctx.drawImage(im,sx,sy,sw,sh,0,0,w,h);
+
+function imageRect(im,progress,motionIndex){
+ const w=canvas.width,h=canvas.height;
+ const scaleBase=Math.max(w/im.naturalWidth,h/im.naturalHeight);
+ const zoom=1+.075*progress;
+ const sw=w/(scaleBase*zoom),sh=h/(scaleBase*zoom);
+ const patterns=[
+ [.5+progress*.12,.5],
+ [.5-progress*.12,.5],
+ [.5,.5+progress*.12],
+ [.5,.5-progress*.12]
+ ];
+ const p=patterns[motionIndex%patterns.length];
+ const sx=Math.max(0,Math.min(im.naturalWidth-sw,(im.naturalWidth-sw)*p[0]));
+ const sy=Math.max(0,Math.min(im.naturalHeight-sh,(im.naturalHeight-sh)*p[1]));
+ ctx.drawImage(im,sx,sy,sw,sh,0,0,w,h);
 }
-function draw(seconds) {
-  const w=canvas.width,h=canvas.height,total=Math.max(1,Number($('#duration').value)||30);
-  ctx.fillStyle='#05070b';ctx.fillRect(0,0,w,h);
-  if(!pics.length)return;
-  const segment=total/pics.length;
-  const safeTime=Math.max(0,Math.min(total-.001,Number(seconds)||0));
-  const index=Math.min(pics.length-1,Math.floor(safeTime/segment));
-  const local=(safeTime-index*segment)/segment;
-  const current=pics[index];
-  if(!current || !current.complete || !current.naturalWidth)return;
-  imageRect(current,local,index);
-  // Cross-dissolve into the next photograph during the final 0.65 seconds of each segment.
-  const fadeWindow=Math.min(.65,segment*.24);
-  const remaining=segment*(1-local);
-  if(index<pics.length-1 && remaining<fadeWindow) {
-    const next=pics[index+1], alpha=1-remaining/fadeWindow;
-    if(next && next.complete && next.naturalWidth) {
-      ctx.save();ctx.globalAlpha=Math.max(0,Math.min(1,alpha));
-      imageRect(next,0,index+1);ctx.restore();
-    }
+
+function draw(seconds){
+ const w=canvas.width,h=canvas.height;
+ const total=Math.max(1,Number($('#duration').value)||30);
+ ctx.fillStyle='#05070b';ctx.fillRect(0,0,w,h);
+ if(!pics.length)return;
+ const segment=total/pics.length;
+ const safeTime=Math.max(0,Math.min(total-.001,Number(seconds)||0));
+ const index=Math.min(pics.length-1,Math.floor(safeTime/segment));
+ const local=(safeTime-index*segment)/segment;
+ const current=pics[index];
+ if(!current||!current.complete||!current.naturalWidth)return;
+ imageRect(current,local,index);
+ const fadeWindow=Math.min(.65,segment*.24);
+ const remaining=segment*(1-local);
+ if(index<pics.length-1&&remaining<fadeWindow){
+  const next=pics[index+1],alpha=1-remaining/fadeWindow;
+  if(next&&next.complete&&next.naturalWidth){
+   ctx.save();ctx.globalAlpha=Math.max(0,Math.min(1,alpha));
+   imageRect(next,0,index+1);ctx.restore();
   }
-  const title=$('#title').value.trim();
-  if(title) {
-    const titleFade=Math.min(1,safeTime/1.2,(total-safeTime)/1.5);
-    const grad=ctx.createLinearGradient(0,h*.66,0,h);
-    grad.addColorStop(0,'transparent');grad.addColorStop(1,'rgba(0,0,0,.76)');
-    ctx.fillStyle=grad;ctx.fillRect(0,h*.62,w,h*.38);
-    ctx.save();ctx.globalAlpha=Math.max(0,titleFade);ctx.fillStyle='white';ctx.textAlign='center';
-    ctx.font='bold 34px system-ui';ctx.shadowColor='#000';ctx.shadowBlur=8;
-    ctx.fillText(title,w/2,h*.84,w*.86);ctx.restore();
-  }
+ }
+ const title=$('#title').value.trim();
+ if(title){
+  const titleFade=Math.min(1,safeTime/1.2,(total-safeTime)/1.5);
+  const grad=ctx.createLinearGradient(0,h*.66,0,h);
+  grad.addColorStop(0,'transparent');
+  grad.addColorStop(1,'rgba(0,0,0,.76)');
+  ctx.fillStyle=grad;ctx.fillRect(0,h*.62,w,h*.38);
+  ctx.save();ctx.globalAlpha=Math.max(0,titleFade);
+  ctx.fillStyle='white';ctx.textAlign='center';
+  ctx.font='bold 34px system-ui';ctx.shadowColor='#000';ctx.shadowBlur=8;
+  ctx.fillText(title,w/2,h*.84,w*.86);ctx.restore();
+ }
 }
-function refreshThumbs() {
-  $('#thumbs').innerHTML='';
-  pics.forEach((im,i)=>{const tile=document.createElement('div');tile.className='thumb';
-    const img=document.createElement('img');img.src=urls[i];img.alt='Fotografía '+(i+1);tile.append(img);$('#thumbs').append(tile);});
+
+function refreshThumbs(){
+ const container=$('#thumbs');
+ container.innerHTML='';
+ pics.forEach((im,i)=>{
+  const tile=document.createElement('div');tile.className='thumb';
+  const img=document.createElement('img');
+  img.src=urls[i];img.alt='Fotografía '+(i+1);
+  const name=document.createElement('div');
+  name.className='name';name.textContent='Fotografía '+(i+1);
+  const actions=document.createElement('div');
+  actions.className='actions';
+
+  const up=document.createElement('button');
+  up.type='button';up.textContent='↑';up.title='Mover arriba';
+  up.disabled=i===0;
+  up.addEventListener('click',()=>movePhoto(i,-1));
+
+  const down=document.createElement('button');
+  down.type='button';down.textContent='↓';down.title='Mover abajo';
+  down.disabled=i===pics.length-1;
+  down.addEventListener('click',()=>movePhoto(i,1));
+
+  const remove=document.createElement('button');
+  remove.type='button';remove.textContent='×';
+  remove.title='Eliminar fotografía';
+  remove.className='remove';
+  remove.addEventListener('click',()=>removePhoto(i));
+
+  actions.append(up,down,remove);
+  tile.append(img,name,actions);
+  container.append(tile);
+ });
+ status.textContent=pics.length+' fotografía(s) seleccionadas.';
 }
+
+function movePhoto(index,direction){
+ const target=index+direction;
+ if(target<0||target>=pics.length)return;
+ [pics[index],pics[target]]=[pics[target],pics[index]];
+ [urls[index],urls[target]]=[urls[target],urls[index]];
+ refreshThumbs();draw(0);
+}
+
+function removePhoto(index){
+ const oldUrl=urls[index];
+ pics.splice(index,1);urls.splice(index,1);
+ URL.revokeObjectURL(oldUrl);
+ refreshThumbs();draw(0);
+ if(pics.length<2)status.textContent='Añade al menos dos fotografías para crear el vídeo.';
+}
+
 $('#photos').addEventListener('change',async e=>{
-  pics=[];urls.forEach(URL.revokeObjectURL);urls=[];$('#thumbs').innerHTML='';
-  const selected=[...e.target.files].filter(f=>f.type.startsWith('image/'));
-  if(!selected.length){status.textContent='No se han seleccionado fotografías.';return;}
-  status.textContent='Cargando '+selected.length+' fotografía(s)…';
-  try {
-    for(const file of selected) {
-      const url=URL.createObjectURL(file), im=new Image();
-      await new Promise((resolve,reject)=>{
-        im.onload=resolve; im.onerror=()=>reject(new Error('No se pudo leer '+file.name));
-        im.src=url;
-      });
-      if(!im.naturalWidth||!im.naturalHeight)throw new Error('Fotografía no válida: '+file.name);
-      urls.push(url);pics.push(im);
-    }
-    refreshThumbs();draw(0);
-    status.textContent=pics.length+' fotografía(s) listas para el montaje automático.';
-  } catch(err) {
-    pics=[];refreshThumbs();status.textContent='Error al cargar imágenes: '+err.message;
+ pics=[];urls.forEach(URL.revokeObjectURL);urls=[];
+ $('#thumbs').innerHTML='';
+ const selected=[...e.target.files].filter(f=>f.type.startsWith('image/'));
+ if(!selected.length){status.textContent='No se han seleccionado fotografías.';return;}
+ status.textContent='Cargando '+selected.length+' fotografía(s)…';
+ try{
+  for(const file of selected){
+   const url=URL.createObjectURL(file),im=new Image();
+   await new Promise((resolve,reject)=>{
+    im.onload=resolve;
+    im.onerror=()=>reject(new Error('No se pudo leer '+file.name));
+    im.src=url;
+   });
+   if(!im.naturalWidth||!im.naturalHeight)throw new Error('Fotografía no válida: '+file.name);
+   urls.push(url);pics.push(im);
   }
+  refreshThumbs();draw(0);
+  status.textContent=pics.length+' fotografía(s) listas. Puedes reordenarlas o eliminarlas.';
+ }catch(err){
+  pics=[];refreshThumbs();
+  status.textContent='Error al cargar imágenes: '+err.message;
+ }
 });
+
 $('#format').addEventListener('change',()=>{dimensions();draw(0);});
 $('#duration').addEventListener('change',()=>draw(0));
 $('#title').addEventListener('input',()=>draw(0));
 
 $('#make').addEventListener('click',async()=>{
-  if(pics.length<2){status.textContent='Selecciona al menos 2 fotografías.';return;}
-  const seconds=Number($('#duration').value), button=$('#make');
-  button.disabled=true;$('#download').style.display='none';
-  let stream=null,recorder=null,audioContext=null,audioElement=null,animationId=null;
-  try {
-    if(!canvas.captureStream || typeof MediaRecorder==='undefined')throw new Error('Este navegador no admite la grabación de vídeo. Prueba con Chrome actualizado.');
-    const mime=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(m=>MediaRecorder.isTypeSupported(m));
-    if(!mime)throw new Error('No hay un formato WebM compatible en este navegador.');
-    stream=canvas.captureStream(30);
-    const musicFile=$('#music').files[0];
-    if(musicFile) {
-      const AC=window.AudioContext||window.webkitAudioContext;
-      if(!AC)throw new Error('El navegador no admite la mezcla de audio.');
-      audioContext=new AC();await audioContext.resume();
-      audioElement=new Audio(URL.createObjectURL(musicFile));audioElement.loop=true;
-      await audioElement.play();
-      const source=audioContext.createMediaElementSource(audioElement);
-      const gain=audioContext.createGain(), destination=audioContext.createMediaStreamDestination();
-      const maxGain=Number($('#volume').value)/100;
-      gain.gain.setValueAtTime(0,audioContext.currentTime);
-      gain.gain.linearRampToValueAtTime(maxGain,audioContext.currentTime+1.5);
-      source.connect(gain);gain.connect(destination);gain.connect(audioContext.destination);
-      destination.stream.getAudioTracks().forEach(track=>stream.addTrack(track));
-      // Fade the soundtrack out during the final 2 seconds.
-      audioElement.addEventListener('timeupdate',()=>{}, {once:true});
-      window.__amFade={gain,audioContext,maxGain};
-    }
-    recorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:6000000});
-    const chunks=[];
-    recorder.addEventListener('dataavailable',e=>{if(e.data&&e.data.size)chunks.push(e.data);});
-    const stopped=new Promise((resolve,reject)=>{
-      recorder.addEventListener('stop',resolve,{once:true});
-      recorder.addEventListener('error',()=>reject(new Error('El grabador ha fallado.')),{once:true});
-    });
-    recorder.start(1000);
-    const start=performance.now();
-    await new Promise(resolve=>{
-      const frame=now=>{
-        const elapsed=(now-start)/1000, time=Math.min(elapsed,seconds-.001);
-        draw(time);
-        if(window.__amFade && audioContext && elapsed>=seconds-2) {
-          const g=window.__amFade.gain;
-          try{g.gain.setTargetAtTime(0,audioContext.currentTime,.35);}catch(e){}
-        }
-        status.textContent='Montaje automático: '+Math.min(100,Math.floor(elapsed/seconds*100))+'%';
-        if(elapsed<seconds)animationId=requestAnimationFrame(frame);else resolve();
-      };
-      animationId=requestAnimationFrame(frame);
-    });
-    draw(seconds-.01);await new Promise(r=>setTimeout(r,200));
-    recorder.stop();await stopped;
-    const blob=new Blob(chunks,{type:mime});
-    if(!blob.size)throw new Error('El vídeo resultante está vacío.');
-    const url=URL.createObjectURL(blob),link=$('#download');
-    link.href=url;link.style.display='inline-block';
-    link.textContent='⬇ Descargar vídeo ('+(blob.size/1048576).toFixed(1)+' MB)';
-    status.textContent='¡Montaje terminado! Pulsa Descargar vídeo para guardar tu creación.';
-  } catch(err) {
-    status.textContent='No se pudo crear el vídeo: '+(err.message||String(err));
-  } finally {
-    if(animationId)cancelAnimationFrame(animationId);
-    if(audioElement){audioElement.pause();audioElement.src='';}
-    if(audioContext){try{await audioContext.close();}catch(e){}}
-    delete window.__amFade;
-    if(stream)stream.getTracks().forEach(t=>t.stop());
-    button.disabled=false;
+ if(pics.length<2){status.textContent='Selecciona al menos 2 fotografías.';return;}
+ const seconds=Number($('#duration').value),button=$('#make');
+ button.disabled=true;$('#download').style.display='none';
+ let stream=null,recorder=null,audioContext=null,audioElement=null,animationId=null;
+ try{
+  if(!canvas.captureStream||typeof MediaRecorder==='undefined')
+   throw new Error('Este navegador no admite la grabación de vídeo. Prueba con Chrome actualizado.');
+  const mime=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(m=>MediaRecorder.isTypeSupported(m));
+  if(!mime)throw new Error('No hay un formato WebM compatible en este navegador.');
+  stream=canvas.captureStream(30);
+  const musicFile=$('#music').files[0];
+  if(musicFile){
+   const AC=window.AudioContext||window.webkitAudioContext;
+   if(!AC)throw new Error('El navegador no admite la mezcla de audio.');
+   audioContext=new AC();await audioContext.resume();
+   audioElement=new Audio(URL.createObjectURL(musicFile));
+   audioElement.loop=true;await audioElement.play();
+   const source=audioContext.createMediaElementSource(audioElement);
+   const gain=audioContext.createGain();
+   const destination=audioContext.createMediaStreamDestination();
+   const maxGain=Number($('#volume').value)/100;
+   gain.gain.setValueAtTime(0,audioContext.currentTime);
+   gain.gain.linearRampToValueAtTime(maxGain,audioContext.currentTime+1.5);
+   source.connect(gain);gain.connect(destination);gain.connect(audioContext.destination);
+   destination.stream.getAudioTracks().forEach(track=>stream.addTrack(track));
+   window.__amFade={gain,audioContext};
   }
+  recorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:6000000});
+  const chunks=[];
+  recorder.addEventListener('dataavailable',e=>{if(e.data&&e.data.size)chunks.push(e.data);});
+  const stopped=new Promise((resolve,reject)=>{
+   recorder.addEventListener('stop',resolve,{once:true});
+   recorder.addEventListener('error',()=>reject(new Error('El grabador ha fallado.')),{once:true});
+  });
+  recorder.start(1000);
+  const start=performance.now();
+  await new Promise(resolve=>{
+   const frame=now=>{
+    const elapsed=(now-start)/1000;
+    const time=Math.min(elapsed,seconds-.001);
+    draw(time);
+    if(window.__amFade&&audioContext&&elapsed>=seconds-2){
+     try{window.__amFade.gain.gain.setTargetAtTime(0,audioContext.currentTime,.35);}catch(e){}
+    }
+    status.textContent='Montaje automático: '+Math.min(100,Math.floor(elapsed/seconds*100))+'%';
+    if(elapsed<seconds)animationId=requestAnimationFrame(frame);
+    else resolve();
+   };
+   animationId=requestAnimationFrame(frame);
+  });
+  draw(seconds-.01);await new Promise(r=>setTimeout(r,200));
+  recorder.stop();await stopped;
+  const blob=new Blob(chunks,{type:mime});
+  if(!blob.size)throw new Error('El vídeo resultante está vacío.');
+  const url=URL.createObjectURL(blob),link=$('#download');
+  link.href=url;link.style.display='inline-block';
+  link.textContent='⬇ Descargar vídeo ('+(blob.size/1048576).toFixed(1)+' MB)';
+  status.textContent='¡Montaje terminado! Pulsa Descargar vídeo para guardar tu creación.';
+ }catch(err){
+  status.textContent='No se pudo crear el vídeo: '+(err.message||String(err));
+ }finally{
+  if(animationId)cancelAnimationFrame(animationId);
+  if(audioElement){audioElement.pause();audioElement.src='';}
+  if(audioContext){try{await audioContext.close();}catch(e){}}
+  delete window.__amFade;
+  if(stream)stream.getTracks().forEach(t=>t.stop());
+  button.disabled=false;
+ }
 });
+
 dimensions();draw(0);
 })();
 </script>
