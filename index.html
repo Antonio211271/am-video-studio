@@ -26,26 +26,75 @@ const button = $('#make');
 let pics = [];
 
 function draw(seconds) {
-  if (!pics.length) return;
-  const w=canvas.width,h=canvas.height;
-  const total=Math.max(1,Number($('#duration').value));
-  const segment=total/pics.length;
-  const index=Math.min(pics.length-1,Math.floor(seconds/segment));
-  const local=Math.max(0,Math.min(1,(seconds-index*segment)/segment));
-  const im=pics[index];
-  const scale=Math.max(w/im.width,h/im.height)*(1+.09*local);
-  const sw=w/scale,sh=h/scale;
-  const sx=Math.max(0,Math.min(im.width-sw,(im.width-sw)/2+(local-.5)*im.width*.06));
-  const sy=Math.max(0,Math.min(im.height-sh,(im.height-sh)/2-(local-.5)*im.height*.06));
-  ctx.fillStyle='#000';ctx.fillRect(0,0,w,h);
-  ctx.drawImage(im,sx,sy,sw,sh,0,0,w,h);
-  const title=$('#title').value.trim();
-  if(title){
-    const grad=ctx.createLinearGradient(0,h*.65,0,h);
-    grad.addColorStop(0,'transparent');grad.addColorStop(1,'rgba(0,0,0,.78)');
-    ctx.fillStyle=grad;ctx.fillRect(0,h*.6,w,h*.4);
-    ctx.fillStyle='white';ctx.textAlign='center';ctx.font='bold 34px system-ui';
-    ctx.fillText(title,w/2,h*.84,w*.86);
+  if (!pics || pics.length === 0) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    status.textContent = 'Selecciona fotografías para comenzar.';
+    return;
+  }
+
+  const w = canvas.width;
+  const h = canvas.height;
+  const total = Math.max(1, Number($('#duration').value) || 60);
+  const segment = total / pics.length;
+
+  const time = Math.max(0, Number(seconds) || 0);
+  const index = Math.min(
+    pics.length - 1,
+    Math.floor(time / segment)
+  );
+
+  const im = pics[index];
+
+  if (!im || !im.complete || !im.naturalWidth || !im.naturalHeight) {
+    status.textContent = 'Preparando fotografía...';
+    return;
+  }
+
+  const local = Math.max(
+    0,
+    Math.min(1, (time - index * segment) / segment)
+  );
+
+  const scale = Math.max(
+    w / im.naturalWidth,
+    h / im.naturalHeight
+  ) * (1 + 0.09 * local);
+
+  const sw = w / scale;
+  const sh = h / scale;
+
+  const sx = Math.max(
+    0,
+    Math.min(im.naturalWidth - sw,
+      (im.naturalWidth - sw) / 2 +
+      (local - 0.5) * im.naturalWidth * 0.06)
+  );
+
+  const sy = Math.max(
+    0,
+    Math.min(im.naturalHeight - sh,
+      (im.naturalHeight - sh) / 2 -
+      (local - 0.5) * im.naturalHeight * 0.06)
+  );
+
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, w, h);
+  ctx.drawImage(im, sx, sy, sw, sh, 0, 0, w, h);
+
+  const title = $('#title').value.trim();
+
+  if (title) {
+    const grad = ctx.createLinearGradient(0, h * 0.65, 0, h);
+    grad.addColorStop(0, 'transparent');
+    grad.addColorStop(1, 'rgba(0,0,0,.78)');
+
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, h * 0.6, w, h * 0.4);
+
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 34px system-ui';
+    ctx.fillText(title, w / 2, h * 0.84, w * 0.86);
   }
 }
 $('#photos').addEventListener('change',async e=>{
